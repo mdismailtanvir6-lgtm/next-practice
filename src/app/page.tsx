@@ -1,6 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 
+export const metadata = {
+  title: "Home",
+  description: "Welcome to my blog website",
+};
+
 export default function Home() {
 
   return (

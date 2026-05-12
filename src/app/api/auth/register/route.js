@@ -1,68 +1,68 @@
 // app/api/auth/register/route.js
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { connectDB } from "@/lib/mongodb";
+
+import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
 
-export async function POST(req) {
+// GET USERS
+export async function GET() {
   try {
-    const { name, email, password } = await req.json();
-
     await connectDB();
 
-    // Check existing user
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return NextResponse.json(
-        { message: "User already exists" },
-        { status: 400 }
-      );
-    }
+    const users = await User.find().sort({ createdAt: -1 });
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await User.create({
-      name : name,
-      email : email,
-      password: hashedPassword,
-    });
-    console.log("Saved user:", user);
-
-    return NextResponse.json({ message: "User created" });
+    return NextResponse.json(users);
   } catch (error) {
     return NextResponse.json(
-      { message: "Error creating user" },
-      { status: 500 }
+      { message: "Failed to fetch users" },
+      { status: 500 },
     );
   }
 }
 
-// import connectDB from "@/lib/mongodb";
-// import User from "@/models/User";
-// import bcrypt from "bcrypt";
+// POST USERS
+export async function POST(req) {
+  try {
+    await connectDB();
 
-// export async function POST(req) {
-//   try {
-//     const { name, email, password } = await req.json();
+    const { name, email, password } = await req.json();
 
-//     await connectDB();
+    // check existing user
+    const existingUser = await User.findOne({ email });
 
-//     const existingUser = await User.findOne({ email });
-//     if (existingUser) {
-//       return Response.json({ message: "User already exists" }, { status: 400 });
-//     }
+    if (existingUser) {
+      return NextResponse.json(
+        { success: false, message: "User already exists" },
+        { status: 400 },
+      );
+    }
 
-//     const hashedPassword = await bcrypt.hash(password, 10);
+    // hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-//     const user = await User.create({
-//       name,
-//       email,
-//       password: hashedPassword,
-//     });
+    // create user
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
 
-//     return Response.json({ message: "User created", user });
-//   } catch (error) {
-//     return Response.json({ error: error.message }, { status: 500 });
-//   }
-// }
+    return NextResponse.json({
+      success: true,
+      message: "User created successfully",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+
+    return NextResponse.json(
+      { success: false, message: "Server Error" },
+      { status: 500 },
+    );
+  }
+}

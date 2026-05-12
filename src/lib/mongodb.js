@@ -1,21 +1,10 @@
-// import mongoose from "mongoose";
-
-// export async function connectDB() {
-//   try {
-//     await mongoose.connect(process.env.MONGO_URI);
-//     console.log("✅ MongoDB Connected from lib/mongodb.js");
-//   } catch (err) {
-//     console.log("❌ Error:", err);
-//   }
-// }
-
-
+// lib/mongodb.js
 import mongoose from "mongoose";
 
-const MONGO_URI = process.env.MONGO_URI;
+const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGO_URI) {
-  throw new Error("❌ Please define MONGO_URI in .env.local");
+if (!MONGODB_URI) {
+  throw new Error("❌ Please define MONGODB_URI in .env.local");
 }
 
 // global cache (Next.js hot reload fix)
@@ -28,7 +17,7 @@ if (!cached) {
   };
 }
 
-export async function connectDB() {
+async function connectDB(dbName = 'data') {
   // ✅ already connected
   if (cached.conn) {
     return cached.conn;
@@ -36,8 +25,9 @@ export async function connectDB() {
 
   // ✅ if no connection is in progress
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGO_URI, {
+    cached.promise = mongoose.connect(MONGODB_URI, {
       bufferCommands: false, // Disable buffering to prevent hanging
+      dbName,
     });
   }
 
@@ -48,8 +38,10 @@ export async function connectDB() {
   } catch (error) {
     cached.promise = null; // retry possible
     console.log("❌ MongoDB Error:", error);
-    // throw error;
+    throw error;
   }
 
   return cached.conn;
 }
+
+export default connectDB;
