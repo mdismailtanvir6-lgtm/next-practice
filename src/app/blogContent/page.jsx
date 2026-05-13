@@ -2,33 +2,33 @@ import BlogList from "./component/BlogList";
 import { getBlogs } from "@/lib/blogs";
 
 // =========== metadata for seo ========
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+// const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-export const metadata = {
-  title: "Blog | My Website",
-  description: "Browse all our blogs and tutorials on web development",
+// export const metadata = {
+//   title: "Blog | My Website",
+//   description: "Browse all our blogs and tutorials on web development",
 
-  openGraph: {
-    title: "Blog | My Website",
-    description: "Browse all our blogs and tutorials on web development",
-    url: `${baseUrl}/blog`,
-    type: "website",
-    siteName: "My Website",
+//   openGraph: {
+//     title: "Blog | My Website",
+//     description: "Browse all our blogs and tutorials on web development",
+//     url: `${baseUrl}/blog`,
+//     type: "website",
+//     siteName: "My Website",
 
-    images: [
-      {
-        url: `${baseUrl}/og/blog.png`,
-        width: 1200,
-        height: 630,
-        alt: "Blog Page",
-      },
-    ],
-  },
+//     images: [
+//       {
+//         url: `${baseUrl}/og/blog.png`,
+//         width: 1200,
+//         height: 630,
+//         alt: "Blog Page",
+//       },
+//     ],
+//   },
 
-  alternates: {
-    canonical: `${baseUrl}/blog`,
-  },
-};
+//   alternates: {
+//     canonical: `${baseUrl}/blog`,
+//   },
+// };
 
 // =========== main blog page component ========
 export default async function BlogPage() {

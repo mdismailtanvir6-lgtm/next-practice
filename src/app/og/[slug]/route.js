@@ -7,7 +7,7 @@
 //    const { slug } = await params;
  
 //    // get blog using helper function
-//    const blog =  getSingleBlog(slug);
+//    const blog =  await getSingleBlog(slug);
 
 //   return new ImageResponse(
 //     (
@@ -35,4 +35,4 @@
 //       height: 630,
 //     }
 //   );
-// }npm 
+// }

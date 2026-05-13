@@ -3,44 +3,44 @@ import { getSingleBlog } from "@/lib/blogs";
 import { notFound } from "next/navigation";
 
 // ======== metadata for seo =========
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-export async function generateMetadata({ params }) {
-  const { slug } = await params;
+// const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+// export async function generateMetadata({ params }) {
+//   const { slug } = await params;
 
-  // get blog using helper function
-  const blog = await getSingleBlog(slug);
+//   // get blog using helper function
+//   const blog = await getSingleBlog(slug);
 
-  // if blog not found
-  if (!blog) {
-    return {
-      title: "Blog Not Found",
-    };
-  }
+//   // if blog not found
+//   if (!blog) {
+//     return {
+//       title: "Blog Not Found",
+//     };
+//   }
 
-  return {
-    title: blog.title,
-    description: blog.description?.slice(0, 160),
+//   return {
+//     title: blog.title,
+//     description: blog.description?.slice(0, 160),
 
-    openGraph: {
-      title: blog.title,
-      description: blog.description?.slice(0, 160),
-      url: `${baseUrl}/blog/${blog.slug}`,
-      type: "article",
-      images: [
-        {
-          url: `${baseUrl}/og/${blog.slug}`,
-          width: 1200,
-          height: 630,
-          alt: blog.title,
-        },
-      ],
-    },
+//     openGraph: {
+//       title: blog.title,
+//       description: blog.description?.slice(0, 160),
+//       url: `${baseUrl}/blog/${blog.slug}`,
+//       type: "article",
+//       images: [
+//         {
+//           url: `${baseUrl}/og/${blog.slug}`,
+//           width: 1200,
+//           height: 630,
+//           alt: blog.title,
+//         },
+//       ],
+//     },
 
-    alternates: {
-      canonical: `${baseUrl}/blog/${blog.slug}`,
-    },
-  };
-}
+//     alternates: {
+//       canonical: `${baseUrl}/blog/${blog.slug}`,
+//     },
+//   };
+// }
 
 // ======== main component =========
 export default async function SingleBlog({ params }) {
